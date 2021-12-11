@@ -1,17 +1,18 @@
 #include "Player.hpp"
 #include <math.h>
 #include <algorithm>
+#include <SDL_mixer.h>
 
 Player::Player()
 {
     /*
     * WINDOWS (change path of image accordingly)
     */
-     setTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/cuphead_idle_2.png");
-     tex_running = TextureManager::LoadTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/cuphead_running.png");
-     tex_jumping = TextureManager::LoadTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/cuphead_jump.png");
-     tex_bullets = TextureManager::LoadTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/Bullets.png");
-     tex_idle_shooting = TextureManager::LoadTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/cuphead_idle_shoot2.png");
+    setTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_idle_2.png");
+    tex_running = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_running.png");
+    tex_jumping = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_jump.png");
+    tex_bullets = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/Bullets.png");
+    tex_idle_shooting = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_idle_shoot2.png");
 
     /*
     * LINUX
@@ -25,6 +26,19 @@ Player::Player()
     setSrc(0, 0, 0, 0);
     setDest(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT - 225, 128, 128);
     setSpeed(0);
+
+    SDL_Init(SDL_INIT_AUDIO);
+
+    int audio_rate = MIX_DEFAULT_FREQUENCY;
+    Uint16 audio_format = AUDIO_S16SYS;
+    int audio_channels = 2;
+    int audio_buffers = 2048;
+
+    if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0)
+    {
+        cout << "Couldn't initialise audio:" << Mix_GetError() << endl;
+        exit(0);
+    }
 }
 
 void Player::update(int ground, int* dist)
@@ -105,7 +119,7 @@ void Player::keyboard_handler(int* dist)
 {
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
     bool jumpPressed = false;
-
+    
     if (currentKeyStates[SDL_SCANCODE_LEFT])
     {
         last_direction = animate_type = RUN_LEFT;
@@ -171,6 +185,9 @@ void Player::keyboard_handler(int* dist)
 
         if (bullet_count_limiter == 20)
             bullet_count_limiter = 1;
+
+        playsound("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/bullet.wav");
+
     }
 
     if (xpos > SCREEN_WIDTH / 2)
@@ -178,6 +195,7 @@ void Player::keyboard_handler(int* dist)
 
     if (xpos < 0)
         xpos = 0;
+
 }
 
 
@@ -311,4 +329,16 @@ void Player::render()
 int Player::getYpos()
 {
     return ypos;
+}
+
+
+void Player::playsound(const char* path)
+{
+    Mix_Chunk* sound = Mix_LoadWAV(path);
+    if (sound == nullptr)
+    {
+        cout << "Couldn't init audio:" << Mix_GetError()<<endl;
+    }
+    Mix_PlayChannel(-1, sound, 0);
+
 }
