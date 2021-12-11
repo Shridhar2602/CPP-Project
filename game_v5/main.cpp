@@ -4,6 +4,8 @@
 #include "Game.hpp"
 #include "constants.hpp"
 #include <iostream>
+#include "Music.hpp"
+
 using namespace std;
 
 Game* game = NULL;
@@ -22,6 +24,10 @@ int main(void)
 
     Uint32 no_frames = 0;
     Uint32 total_time = 0;
+    
+    Music m;
+    m.playmusic("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/bgm.wav",false);
+
     while (game->running())
     {
         // gives number of milliseconds since SDL started
