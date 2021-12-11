@@ -39,6 +39,7 @@ public:
     void animate_jump();
     void animate_shoot_idle();
     void animate_bullet(bullet*);
+    void playsound(const char*);
 
     void render();
 
