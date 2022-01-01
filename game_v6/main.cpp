@@ -1,6 +1,6 @@
 #define SDL_MAIN_HANDLED
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "Game.hpp"
 #include "constants.hpp"
 #include <iostream>
@@ -26,7 +26,7 @@ int main(void)
     Uint32 total_time = 0;
     
     Music m;
-    m.playmusic("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/bgm.wav",false);
+    m.playmusic("assets/bgm.wav",false);
 
     while (game->running())
     {

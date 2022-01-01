@@ -5,12 +5,14 @@
 #include "Player.hpp"
 #include "Background.hpp"
 #include "Platform.hpp"
-
+#include "Enemy.hpp"
+#include "SDL2/SDL_mixer.h"
 #include <vector>
 using namespace std;
 
 Player* player1;
 Background* background1;
+Enemy* e1;
 vector<Platform*> ListOfPlatforms;
 
 SDL_Renderer* Game::renderer = NULL;
@@ -41,7 +43,9 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
         cout << "Subsystem Initialised!....." << endl;
 
         window = SDL_CreateWindow("Cuphead", xpos, ypos, width, height, flags);
-
+        SDL_Surface *icon=IMG_Load("assets/icon.png");
+        SDL_SetWindowIcon(window,icon);
+        SDL_FreeSurface(icon);
         if (window)
             cout << "Window Created" << endl;
 
@@ -63,6 +67,7 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
 
     player1 = new Player();
     background1 = new Background();
+    e1=new Enemy(1);
     //int disX = rand() % (SCREEN_WIDTH / 2) + (SCREEN_WIDTH / 2);
     //int disY = rand() % (SCREEN_HEIGHT / 2) + 160;
     //platform1 = new Platform(disX, disY);
@@ -111,6 +116,33 @@ void Game::update()
     }
 
     player1->update(SCREEN_HEIGHT - CurrGround, &distCovered);
+    e1->update(&distCovered);
+    for(int i=0;i<player1->getBullets().size();i++)
+    {
+        SDL_bool collision=SDL_HasIntersection(e1->getdestrect(),&player1->getBullets()[i]->dest);
+        if(collision)
+        {
+            e1->life--;
+            Mix_Chunk* sound = Mix_LoadWAV("assets/hit.wav");
+            Mix_PlayChannel(1, sound, 0);
+            player1->getBullets()[i]->hit=true;
+            score+=20;
+            if(e1->life==0)
+            {
+                score+=50;
+                e1->kill();
+            }
+        }
+    }
+    SDL_bool c2=SDL_HasIntersection(e1->getdestrect(),player1->getdestrect());
+    if(c2)
+    {
+        playeralive=false;
+    }
+    if(!playeralive)
+    {
+        isRunning=false;
+    }
 }
 
 void Game::render()
@@ -126,7 +158,7 @@ void Game::render()
     }
     //platform1->render();
     player1->render();
-
+    e1->render();
     SDL_RenderPresent(renderer);
 }
 

@@ -9,6 +9,7 @@ struct bullet
 {
     SDL_Rect dest;
     int direction;
+    bool hit;
 };
 
 enum animation_type

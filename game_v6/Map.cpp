@@ -30,8 +30,8 @@ int lvl_1[a][b] = { 0 };
 
 Map::Map()
 {
-    //water = TextureManager::LoadTexture("assets/water.png");
-    water = TextureManager::LoadTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/water.png");
+    water = TextureManager::LoadTexture("assets/water.png");
+    //water = TextureManager::LoadTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/water.png");
 
     //grass
     //water

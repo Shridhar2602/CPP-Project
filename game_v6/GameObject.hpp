@@ -12,6 +12,8 @@ public:
     void setSrc(int x, int y, int w, int h);
     void setDest(int x, int y, int w, int h);
     void setSpeed(int s) { speed = s; }
+    SDL_Rect *getdestrect() { return &dest_rect;}
+    
 
 protected:
     int xpos, ypos, width, height;

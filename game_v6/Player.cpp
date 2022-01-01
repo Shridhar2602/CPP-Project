@@ -1,27 +1,27 @@
 #include "Player.hpp"
 #include <math.h>
 #include <algorithm>
-#include <SDL_mixer.h>
+#include <SDL2/SDL_mixer.h>
 
 Player::Player()
 {
     /*
     * WINDOWS (change path of image accordingly)
     */
-    setTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_idle_2.png");
-    tex_running = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_running.png");
-    tex_jumping = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_jump.png");
-    tex_bullets = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/Bullets.png");
-    tex_idle_shooting = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_idle_shoot2.png");
+    //setTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_idle_2.png");
+    //tex_running = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_running.png");
+    //tex_jumping = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_jump.png");
+    //tex_bullets = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/Bullets.png");
+    //tex_idle_shooting = TextureManager::LoadTexture("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/cuphead_idle_shoot2.png");
 
     /*
     * LINUX
     */
-    //setTexture("assets/cuphead_idle_2.png");
-    //tex_running = TextureManager::LoadTexture("assets/cuphead_running.png");
-    //tex_jumping = TextureManager::LoadTexture("assets/cuphead_jump.png");
-    //tex_bullets = TextureManager::LoadTexture("assets/Bullets.png");
-    //tex_idle_shooting = TextureManager::LoadTexture("assets/cuphead_idle_shoot.png");
+    setTexture("assets/cuphead_idle_2.png");
+    tex_running = TextureManager::LoadTexture("assets/cuphead_running.png");
+    tex_jumping = TextureManager::LoadTexture("assets/cuphead_jump.png");
+    tex_bullets = TextureManager::LoadTexture("assets/Bullets.png");
+    tex_idle_shooting = TextureManager::LoadTexture("assets/cuphead_idle_shoot2.png");
 
     setSrc(0, 0, 0, 0);
     setDest(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT - 225, 128, 128);
@@ -165,7 +165,7 @@ void Player::keyboard_handler(int* dist)
 
             bullet* b = new bullet;
             b->direction = last_direction;
-
+            b->hit=false;
             if (last_direction == RUN_RIGHT)
             {
                 b->dest.x = dest_rect.x + 110;
@@ -186,7 +186,7 @@ void Player::keyboard_handler(int* dist)
         if (bullet_count_limiter == 20)
             bullet_count_limiter = 1;
 
-        playsound("D:/IIITB/COURSE/SEM 3/ESS 201-Programming II/CPPproj/Cuphead/assets/bullet.wav");
+        playsound("assets/bullet.wav");
 
     }
 
@@ -314,14 +314,17 @@ void Player::render()
 
     for (int i = 0; i < bullets.size(); i++)
     {
-        if (bullets[i]->direction == RUN_RIGHT)
+        if(!bullets[i]->hit)
         {
-            SDL_RenderCopy(Game::renderer, tex_bullets, &bullet_src, &bullets[i]->dest);
-        }
+            if (bullets[i]->direction == RUN_RIGHT)
+            {
+                SDL_RenderCopy(Game::renderer, tex_bullets, &bullet_src, &bullets[i]->dest);
+            }
 
-        else
-        {
-            SDL_RenderCopyEx(Game::renderer, tex_bullets, &bullet_src, &bullets[i]->dest, 0, NULL, SDL_FLIP_HORIZONTAL);
+            else
+            {
+                SDL_RenderCopyEx(Game::renderer, tex_bullets, &bullet_src, &bullets[i]->dest, 0, NULL, SDL_FLIP_HORIZONTAL);
+            }
         }
     }
 }

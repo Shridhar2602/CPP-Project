@@ -6,14 +6,14 @@ Background::Background()
     /*
     * WINDOWS
     */
-    grass = TextureManager::LoadTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/grass.png");
-    sky = TextureManager::LoadTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/sky1.png");
+    //grass = TextureManager::LoadTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/grass.png");
+    //sky = TextureManager::LoadTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/sky1.png");
 
     /*
     * lINUX
     */
-    //grass = TextureManager::LoadTexture("assets/grass.png");
-    //sky = TextureManager::LoadTexture("assets/sky1.png");
+    grass = TextureManager::LoadTexture("assets/grass.png");
+    sky = TextureManager::LoadTexture("assets/sky1.png");
 
     bg.push_back(objTexture);
     bg.push_back(background2);

@@ -7,56 +7,56 @@ Platform::Platform(int distX, int distY, int wd, int platNo) {
     {
     case 1:
     {
-        setTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/platform1.png");
+        setTexture("assets/platform1.png");
         wd = 432;
         ht = 188;
     }
         break;
     case 2:
     {
-        setTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/platform2.png");
+        setTexture("assets/platform2.png");
         wd = 700;
         ht = 570;
     }
     break;
     case 3:
     {
-        setTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/platform3.png");
+        setTexture("assets/platform3.png");
         wd = 545;
         ht = 200;
     }
     break;
     case 4:
     {
-        setTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/platform4.png");
+        setTexture("assets/platform4.png");
         wd = 748;
         ht = 183;
     }
     break;
     case 5:
     {
-        setTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/platform5.png");
+        setTexture("assets/platform5.png");
         wd = 700;
         ht = 570;
     }
     break;
     case 6:
     {
-        setTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/wood-platform6.png");
+        setTexture("assets/wood-platform6.png");
         wd = 600;
         ht = 142;
     }
     break;
     case 7:
     {
-        setTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/platform7.png");
+        setTexture("assets/platform7.png");
         wd = 425;
         ht = 101;
     }
     break;
     case 8:
     {
-        setTexture("C:/Users/anura/Desktop/CppProject/testSDL/Source/assets/platform8.png");
+        setTexture("assets/platform8.png");
         wd = 184;
         ht = 96;
     }

@@ -19,12 +19,13 @@ public:
     bool running();
     void render();
     void clean();
-
     static SDL_Renderer* renderer;
 
     SDL_Window* getWindow() { return window; }
 
 private:
+    bool playeralive=true;
+    int score=0;
     int count = 0;
     bool isRunning;
     SDL_Window* window;
