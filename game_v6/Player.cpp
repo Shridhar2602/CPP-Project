@@ -186,8 +186,12 @@ void Player::keyboard_handler(int* dist)
         if (bullet_count_limiter == 20)
             bullet_count_limiter = 1;
 
-        playsound("assets/bullet.wav");
+        playsound("assets/bullet2.wav");
+    }
 
+    if(!currentKeyStates[SDL_SCANCODE_X])
+    {
+        Mix_HaltChannel(-1);
     }
 
     if (xpos > SCREEN_WIDTH / 2)

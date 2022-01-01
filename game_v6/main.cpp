@@ -20,7 +20,7 @@ int main(void)
     int frame_time;
 
     game = new Game();
-    game->init("Cuphead", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
+    game->init("Cuphead", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, true);
 
     Uint32 no_frames = 0;
     Uint32 total_time = 0;
