@@ -37,10 +37,10 @@ private:
 
     int screen_type = MAIN_MENU;
     SDL_Texture *menu_background = NULL;
-   
 
     bool playeralive=true;
-    int score=0;
+    int score = 0;
+    string score_str = "Score: 0";
     int count = 0;
     bool isRunning;
     SDL_Window* window;

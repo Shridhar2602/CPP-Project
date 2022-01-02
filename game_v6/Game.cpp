@@ -7,6 +7,7 @@
 #include "Platform.hpp"
 #include "Enemy.hpp"
 #include "SDL2/SDL_mixer.h"
+#include "Text.hpp"
 #include <vector>
 using namespace std;
 
@@ -18,6 +19,8 @@ Mouse *mouse;
 Button *button_play ;
 Button *button_ins;
 vector<Platform*> ListOfPlatforms;
+
+Text *score_text;
 
 SDL_Renderer* Game::renderer = NULL;
 
@@ -53,6 +56,9 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
         if (window)
             cout << "Window Created" << endl;
 
+        if(TTF_Init() == -1)
+            cout << "TTF init failed...." << endl;
+
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         // ERROR::WINDOW::NOTCREATED
         if (renderer)
@@ -77,6 +83,10 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
     menu_background = TextureManager::LoadTexture("assets/BackGround3.png");
     button_play = new Button(SCREEN_WIDTH / 2 - 135, 150, 271, 79, "assets/play4.png");
     button_ins = new Button(SCREEN_WIDTH / 2 - 300, 250, 605, 89, "assets/Instructions1.png");
+
+    score_text = new Text();
+    score_text->set_rect(SCREEN_WIDTH - 250, 20, 200, 75);
+
     //int disX = rand() % (SCREEN_WIDTH / 2) + (SCREEN_WIDTH / 2);
     //int disY = rand() % (SCREEN_HEIGHT / 2) + 160;
     //platform1 = new Platform(disX, disY);
@@ -145,10 +155,15 @@ if(screen_type == GAME)
             Mix_Chunk* sound = Mix_LoadWAV("assets/hit.wav");
             Mix_PlayChannel(1, sound, 0);
             player1->getBullets()[i]->hit=true;
+
+            score_str = "Score: ";
             score+=20;
+            score_str.append(to_string(score));
             if(e1->life==0)
             {
+                score_str = "Score: ";
                 score+=50;
+                score_str.append(to_string(score));
                 e1->kill();
             }
         }
@@ -196,6 +211,7 @@ void Game::render()
 
         player1->render();
         e1->render();
+        score_text->Render(score_str);
     }
 
     else if(screen_type == EXIT)
