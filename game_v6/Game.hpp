@@ -12,6 +12,7 @@ using namespace std;
 enum render_type
 {
     MAIN_MENU,
+    INSTRUCTIONS,
     GAME,
     EXIT
 };
@@ -37,6 +38,7 @@ private:
 
     int screen_type = MAIN_MENU;
     SDL_Texture *menu_background = NULL;
+    SDL_Texture *menu_instruction = NULL;
 
     bool playeralive=true;
     int score = 0;

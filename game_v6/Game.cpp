@@ -17,6 +17,9 @@ Enemy* e1;
 Mouse *mouse;
 Button *button_play ;
 Button *button_ins;
+Button *button_back;
+Button *button_exit;
+
 vector<Platform*> ListOfPlatforms;
 
 Text *score_text;
@@ -81,8 +84,13 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
 
     mouse = new Mouse();
     menu_background = TextureManager::LoadTexture("assets/BackGround3.png");
+    menu_instruction = TextureManager::LoadTexture("assets/instruction.png");
+
     button_play = new Button(SCREEN_WIDTH / 2 - 135, 150, 271, 79, "assets/play4.png");
     button_ins = new Button(SCREEN_WIDTH / 2 - 300, 250, 605, 89, "assets/Instructions1.png");
+    button_back = new Button(20, 20, 200, 81, "assets/back.jpg");
+
+
 
     score_text = new Text();
     score_text->set_rect(SCREEN_WIDTH - 250, 20, 200, 75);
@@ -192,12 +200,16 @@ if(screen_type == GAME)
         }
            
         else if(life <= 0)
+        {
+            m.playchannel(3, "assets/player_dead.wav", 0);
             playeralive = false;
+        }
     }
 
     if(!playeralive)
     {
-        isRunning=false;
+        //isRunning=false;
+        screen_type = MAIN_MENU;
     }
 }
 }
@@ -208,6 +220,14 @@ void Game::render()
 
     if(screen_type == MAIN_MENU)
     {
+
+        if(!(Mix_Playing(4)))
+        {
+            m.playchannel(4, "assets/menu.wav", -1);
+            Mix_Volume(4, 128);
+        }
+        
+        Mix_PauseMusic();
         SDL_RenderCopy(Game::renderer, menu_background, NULL, NULL);
         button_play->render_button();
         button_ins->render_button();
@@ -216,11 +236,18 @@ void Game::render()
         {
             screen_type = GAME;
         }
+
+        if(button_ins->isClicked(mouse))
+        {
+            screen_type = INSTRUCTIONS;
+        }
     }
 
     else if(screen_type == GAME)
     {
-           // add stuff to render
+        // add stuff to render
+        Mix_HaltChannel(4);
+        Mix_ResumeMusic();
         background1->render();
         for (int i = 0;i < ListOfPlatforms.size();i++) 
         {
@@ -235,6 +262,14 @@ void Game::render()
         e1->render();
         score_text->Render(score_str);
         life_text->Render(life_str);
+    }
+
+    else if(screen_type == INSTRUCTIONS)
+    {
+        SDL_RenderCopy(Game::renderer, menu_instruction, NULL, NULL);
+        button_back->render_button();
+        if(button_back->isClicked(mouse))
+            screen_type = MAIN_MENU;
     }
 
     else if(screen_type == EXIT)
