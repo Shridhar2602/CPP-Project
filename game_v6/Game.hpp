@@ -4,6 +4,7 @@
 #include "Mouse.hpp"
 #include "Button.hpp"
 #include "Music.hpp"
+#include "Leaderboard.hpp"
 //#include "Platform.hpp"
 //#include <bits/stdc++.h>
 #include <vector>
@@ -14,6 +15,7 @@ enum render_type
     MAIN_MENU,
     INSTRUCTIONS,
     GAME,
+    LEADERBOARD,
     EXIT
 };
 
@@ -39,7 +41,7 @@ private:
     int screen_type = MAIN_MENU;
     SDL_Texture *menu_background = NULL;
     SDL_Texture *menu_instruction = NULL;
-
+    
     bool playeralive=true;
     int score = 0;
     string score_str = "Score: 0";

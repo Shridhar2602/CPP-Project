@@ -16,6 +16,26 @@ Background::Background()
     sky = TextureManager::LoadTexture("assets/sky1.png");
     start = TextureManager::LoadTexture("assets/Run_n_Gun.png");
 
+    leaderboard_background = TextureManager::LoadTexture("assets/winscreen.png");
+    leaderboard_board = TextureManager::LoadTexture("assets/board.png");
+    tex_result = TextureManager::LoadTexture("assets/result.png");
+    quit = TextureManager::LoadTexture("assets/quit.png");
+
+    result_dest.x = SCREEN_WIDTH / 2 - 790/2;
+    result_dest.y = 25;
+    result_dest.w = 792;
+    result_dest.h = 147;
+
+    quit_dest.x = SCREEN_WIDTH / 2 - 620/2;
+    quit_dest.y = 920;
+    quit_dest.w = 620;
+    quit_dest.h = 86;
+
+    board_dest.x = SCREEN_WIDTH / 2 - 400;
+    board_dest.y = 200;
+    board_dest.w = 800;
+    board_dest.h = 647;
+
     start_dest.x = SCREEN_WIDTH / 2 - 600;
     start_dest.y = SCREEN_HEIGHT / 2 - 330;
     start_dest.w = 1209;
@@ -155,4 +175,12 @@ void Background::render()
         SDL_RenderCopy(Game::renderer, start, NULL, &start_dest);
         start_counter--;
     }
+}
+
+void Background::render_leaderboard()
+{
+    SDL_RenderCopy(Game::renderer, leaderboard_background, NULL, NULL);
+    SDL_RenderCopy(Game::renderer, tex_result, NULL, &result_dest);
+    SDL_RenderCopy(Game::renderer, leaderboard_board, NULL, &board_dest);
+    SDL_RenderCopy(Game::renderer, quit, NULL, &quit_dest);
 }

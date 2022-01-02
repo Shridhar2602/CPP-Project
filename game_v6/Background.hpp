@@ -17,6 +17,7 @@ public:
     void update();
     void keyboard_handler();
     void render();
+    void render_leaderboard();
 
 private:
     SDL_Texture* background2 = NULL;
@@ -24,8 +25,14 @@ private:
     SDL_Texture* sky = NULL;
     SDL_Texture* start = NULL;
 
-    Music *level_start;
+    SDL_Texture *leaderboard_background = NULL;
+    SDL_Texture *leaderboard_board = NULL;
+    SDL_Texture *tex_result = NULL;
+    SDL_Texture *quit = NULL;
 
+    SDL_Rect result_dest, board_dest, quit_dest;
+
+    Music *level_start;
 
     int curr_dist = 0;
     int grass_offset = 0;

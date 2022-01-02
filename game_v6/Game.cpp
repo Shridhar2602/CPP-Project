@@ -20,6 +20,8 @@ Button *button_ins;
 Button *button_back;
 Button *button_exit;
 
+Leaderboard *lb;
+
 vector<Platform*> ListOfPlatforms;
 
 Text *score_text;
@@ -85,10 +87,13 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
     mouse = new Mouse();
     menu_background = TextureManager::LoadTexture("assets/BackGround3.png");
     menu_instruction = TextureManager::LoadTexture("assets/instruction.png");
+    
 
     button_play = new Button(SCREEN_WIDTH / 2 - 135, 150, 271, 79, "assets/play4.png");
     button_ins = new Button(SCREEN_WIDTH / 2 - 300, 250, 605, 89, "assets/Instructions1.png");
     button_back = new Button(20, 20, 200, 81, "assets/back.jpg");
+
+    lb = new Leaderboard();
 
 
 
@@ -132,86 +137,88 @@ void Game::handleEvents()
 
 void Game::update()
 {
-
-if(screen_type == GAME)
-{
-    background1->update();
-
-    int CurrGround = 260;
-    
-    int n = sizeof(platforms) / sizeof(platforms[0]);
-    //for (int i = 0;i < n;i++) {
-    //    if((platforms[i][0] - distCovered) >= SCREEN_WIDTH && (platforms[i][0] - distCovered) >= -SCREEN_WIDTH)
-    //        ListOfPlatforms.push_back(new Platform(platforms[i][0], platforms[i][1], platforms[i][2], platforms[i][3], platforms[i][4]));
-    //}
-    vector<int>::iterator it;
-    for (auto it = ListOfPlatforms.begin(); it != ListOfPlatforms.end(); it++) {
-        (*it)->update(&distCovered);
-    }
-    for (int i = 0;i < n;i++) {
-        if (((SCREEN_WIDTH / 2) + distCovered >= platforms[i][0] + 80) && 
-            (SCREEN_WIDTH / 2) + distCovered <= platforms[i][0] + platforms[i][2]) {
-            CurrGround = platforms[i][1] + 121;
-        }
-    }
-
-    player1->update(SCREEN_HEIGHT - CurrGround, &distCovered);
-    e1->update(&distCovered);
-    for(int i=0;i<player1->getBullets().size();i++)
+    if(screen_type == GAME)
     {
-        SDL_bool collision=SDL_HasIntersection(e1->getdestrect(),&player1->getBullets()[i]->dest);
-        if(collision)
-        {
-            e1->life--;
-            Mix_Chunk* sound = Mix_LoadWAV("assets/hit.wav");
-            Mix_PlayChannel(1, sound, 0);
-            player1->getBullets()[i]->hit=true;
+        background1->update();
 
-            score_str = "Score: ";
-            score+=20;
-            score_str.append(to_string(score));
-            if(e1->life==0)
-            {
-                score_str = "Score: ";
-                score+=50;
-                score_str.append(to_string(score));
-                e1->kill();
+        int CurrGround = 260;
+
+        int n = sizeof(platforms) / sizeof(platforms[0]);
+        //for (int i = 0;i < n;i++) {
+        //    if((platforms[i][0] - distCovered) >= SCREEN_WIDTH && (platforms[i][0] - distCovered) >= -SCREEN_WIDTH)
+        //        ListOfPlatforms.push_back(new Platform(platforms[i][0], platforms[i][1], platforms[i][2], platforms[i][3], platforms[i][4]));
+        //}
+        vector<int>::iterator it;
+        for (auto it = ListOfPlatforms.begin(); it != ListOfPlatforms.end(); it++) {
+            (*it)->update(&distCovered);
+        }
+        for (int i = 0;i < n;i++) {
+            if (((SCREEN_WIDTH / 2) + distCovered >= platforms[i][0] + 80) && 
+                (SCREEN_WIDTH / 2) + distCovered <= platforms[i][0] + platforms[i][2]) {
+                CurrGround = platforms[i][1] + 121;
             }
         }
-    }
 
-    SDL_bool c2=SDL_HasIntersection(e1->getdestrect(),player1->getdestrect());
-    
-    if(invincible_period != 200)
-        invincible_period--;
-    if(invincible_period == 0)
-        invincible_period = 200;
-
-    if(c2)
-    {
-        //playeralive=false;
-        if(life > 0 && invincible_period == 200)
+        player1->update(SCREEN_HEIGHT - CurrGround, &distCovered);
+        e1->update(&distCovered);
+        for(int i=0;i<player1->getBullets().size();i++)
         {
-            life_str = "Life: ";
-            life--;
-            life_str.append(to_string(life));
+            SDL_bool collision=SDL_HasIntersection(e1->getdestrect(),&player1->getBullets()[i]->dest);
+            if(collision)
+            {
+                e1->life--;
+                Mix_Chunk* sound = Mix_LoadWAV("assets/hit.wav");
+                Mix_PlayChannel(1, sound, 0);
+                player1->getBullets()[i]->hit=true;
+
+                score_str = "Score: ";
+                score+=20;
+                score_str.append(to_string(score));
+                if(e1->life==0)
+                {
+                    score_str = "Score: ";
+                    score+=50;
+                    score_str.append(to_string(score));
+                    e1->kill();
+                }
+            }
+        }
+
+        SDL_bool c2=SDL_HasIntersection(e1->getdestrect(),player1->getdestrect());
+
+        if(invincible_period != 200)
             invincible_period--;
-            cout << "dead" << endl;
-        }
-           
-        else if(life <= 0)
+        if(invincible_period == 0)
+            invincible_period = 200;
+
+        if(c2)
         {
-            m.playchannel(3, "assets/player_dead.wav", 0);
-            playeralive = false;
+            //playeralive=false;
+            if(life > 0 && invincible_period == 200)
+            {
+                life_str = "Life: ";
+                life--;
+                life_str.append(to_string(life));
+                invincible_period--;
+                cout << "dead" << endl;
+            }
+
+            else if(life <= 0)
+            {
+                m.playchannel(3, "assets/player_dead.wav", 0);
+                playeralive = false;
+            }
+        }
+
+        if(!playeralive)
+        {
+            //isRunning=false;
+            screen_type = LEADERBOARD;
         }
     }
 
-    if(!playeralive)
-    {
-        //isRunning=false;
-        screen_type = MAIN_MENU;
-    }
-}
+    else if(screen_type == LEADERBOARD)
+        lb->update();
 }
 
 void Game::render()
@@ -272,9 +279,18 @@ void Game::render()
             screen_type = MAIN_MENU;
     }
 
-    else if(screen_type == EXIT)
+    else if(screen_type == LEADERBOARD)
     {
+        Mix_PauseMusic();
 
+        if(!(Mix_Playing(4)))
+        {
+            m.playchannel(4, "assets/menu.wav", -1);
+            Mix_Volume(4, 128);
+        }
+
+        background1->render_leaderboard();
+        lb->render();
     }
 
     SDL_RenderPresent(renderer);

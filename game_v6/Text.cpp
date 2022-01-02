@@ -16,6 +16,11 @@ void Text::set_rect(int x, int y, int w, int h)
     dest_rect.h = h;
 }
 
+void Text::set_color(Uint8 red, Uint8 green, Uint8 blue)
+{
+    color = {red, green, blue};
+}
+
 void Text::Render(string text)
 {
     tex = TextureManager::LoadText(Sans, text, color);

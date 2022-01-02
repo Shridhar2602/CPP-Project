@@ -1,0 +1,5 @@
+Shridhar : 50
+Mayank : 100
+Darshak : 76
+Anurag : 56
+Player3 : 45

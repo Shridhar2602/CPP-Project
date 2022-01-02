@@ -11,6 +11,7 @@ class Text
     public:
         Text();
         void set_rect(int x, int y, int w, int h);
+        void set_color(Uint8 red, Uint8 green, Uint8 blue);
         void Render(string text);
 
     private:
