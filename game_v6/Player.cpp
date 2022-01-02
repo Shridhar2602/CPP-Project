@@ -132,7 +132,8 @@ void Player::keyboard_handler(int* dist)
     {
         last_direction = animate_type = RUN_RIGHT;
         xpos += speed;
-        *dist += 6;
+        if(*dist < 10 * SCREEN_WIDTH)
+            *dist += 6;
     }
 
     if (currentKeyStates[SDL_SCANCODE_Z])

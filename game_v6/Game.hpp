@@ -3,7 +3,7 @@
 #include "constants.hpp"
 #include "Mouse.hpp"
 #include "Button.hpp"
-
+#include "Music.hpp"
 //#include "Platform.hpp"
 //#include <bits/stdc++.h>
 #include <vector>
@@ -41,6 +41,14 @@ private:
     bool playeralive=true;
     int score = 0;
     string score_str = "Score: 0";
+
+    int life = 3;
+    string life_str = "Life: 3";
+
+    int invincible_period = 180;
+
+    Music m;
+
     int count = 0;
     bool isRunning;
     SDL_Window* window;

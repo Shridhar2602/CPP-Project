@@ -1,7 +1,6 @@
 #include "Game.hpp"
 #include "TextureManager.hpp"
 #include "GameObject.hpp"
-#include "Map.hpp"
 #include "Player.hpp"
 #include "Background.hpp"
 #include "Platform.hpp"
@@ -21,6 +20,7 @@ Button *button_ins;
 vector<Platform*> ListOfPlatforms;
 
 Text *score_text;
+Text *life_text;
 
 SDL_Renderer* Game::renderer = NULL;
 
@@ -86,6 +86,9 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
 
     score_text = new Text();
     score_text->set_rect(SCREEN_WIDTH - 250, 20, 200, 75);
+
+    life_text = new Text();
+    life_text->set_rect(SCREEN_WIDTH - 250, 100, 200, 75);
 
     //int disX = rand() % (SCREEN_WIDTH / 2) + (SCREEN_WIDTH / 2);
     //int disY = rand() % (SCREEN_HEIGHT / 2) + 160;
@@ -168,11 +171,30 @@ if(screen_type == GAME)
             }
         }
     }
+
     SDL_bool c2=SDL_HasIntersection(e1->getdestrect(),player1->getdestrect());
+    
+    if(invincible_period != 200)
+        invincible_period--;
+    if(invincible_period == 0)
+        invincible_period = 200;
+
     if(c2)
     {
-        playeralive=false;
+        //playeralive=false;
+        if(life > 0 && invincible_period == 200)
+        {
+            life_str = "Life: ";
+            life--;
+            life_str.append(to_string(life));
+            invincible_period--;
+            cout << "dead" << endl;
+        }
+           
+        else if(life <= 0)
+            playeralive = false;
     }
+
     if(!playeralive)
     {
         isRunning=false;
@@ -212,6 +234,7 @@ void Game::render()
         player1->render();
         e1->render();
         score_text->Render(score_str);
+        life_text->Render(life_str);
     }
 
     else if(screen_type == EXIT)

@@ -15,12 +15,12 @@ Enemy::Enemy(int eNo)
             break;
     }
     setSrc(0,0,0,0);
-    setDest(500+22*SCREEN_WIDTH/2,0,264,SCREEN_HEIGHT-200);
+    setDest(500+3*SCREEN_WIDTH/2,0,264,SCREEN_HEIGHT-200);
     setSpeed(6);
 }
 Enemy::~Enemy()
 {
-
+    
 }
 void Enemy::update(int *dist)
 {
