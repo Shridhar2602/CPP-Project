@@ -1,10 +1,20 @@
 #pragma once
 
 #include "constants.hpp"
+#include "Mouse.hpp"
+#include "Button.hpp"
+
 //#include "Platform.hpp"
 //#include <bits/stdc++.h>
 #include <vector>
 using namespace std;
+
+enum render_type
+{
+    MAIN_MENU,
+    GAME,
+    EXIT
+};
 
 class Game
 {
@@ -24,6 +34,11 @@ public:
     SDL_Window* getWindow() { return window; }
 
 private:
+
+    int screen_type = MAIN_MENU;
+    SDL_Texture *menu_background = NULL;
+   
+
     bool playeralive=true;
     int score=0;
     int count = 0;

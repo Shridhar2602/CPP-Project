@@ -27,18 +27,18 @@ Player::Player()
     setDest(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT - 225, 128, 128);
     setSpeed(0);
 
-    SDL_Init(SDL_INIT_AUDIO);
+    // SDL_Init(SDL_INIT_AUDIO);
 
-    int audio_rate = MIX_DEFAULT_FREQUENCY;
-    Uint16 audio_format = AUDIO_S16SYS;
-    int audio_channels = 2;
-    int audio_buffers = 2048;
+    // int audio_rate = MIX_DEFAULT_FREQUENCY;
+    // Uint16 audio_format = AUDIO_S16SYS;
+    // int audio_channels = 2;
+    // int audio_buffers = 2048;
 
-    if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0)
-    {
-        cout << "Couldn't initialise audio:" << Mix_GetError() << endl;
-        exit(0);
-    }
+    // if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) != 0)
+    // {
+    //     cout << "Couldn't initialise audio:" << Mix_GetError() << endl;
+    //     exit(0);
+    // }
 }
 
 void Player::update(int ground, int* dist)
@@ -186,12 +186,13 @@ void Player::keyboard_handler(int* dist)
         if (bullet_count_limiter == 20)
             bullet_count_limiter = 1;
 
-        playsound("assets/bullet2.wav");
+        if(!(Mix_Playing(0)))
+            playsound("assets/bullet2.wav");
     }
 
     if(!currentKeyStates[SDL_SCANCODE_X])
     {
-        Mix_HaltChannel(-1);
+        Mix_HaltChannel(0);
     }
 
     if (xpos > SCREEN_WIDTH / 2)
@@ -346,6 +347,5 @@ void Player::playsound(const char* path)
     {
         cout << "Couldn't init audio:" << Mix_GetError()<<endl;
     }
-    Mix_PlayChannel(-1, sound, 0);
-
+    Mix_PlayChannel(0, sound, 0);
 }

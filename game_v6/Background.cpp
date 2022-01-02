@@ -14,10 +14,17 @@ Background::Background()
     */
     grass = TextureManager::LoadTexture("assets/grass.png");
     sky = TextureManager::LoadTexture("assets/sky1.png");
+    start = TextureManager::LoadTexture("assets/Run_n_Gun.png");
+
+    start_dest.x = SCREEN_WIDTH / 2 - 600;
+    start_dest.y = SCREEN_HEIGHT / 2 - 330;
+    start_dest.w = 1209;
+    start_dest.h = 654;
 
     bg.push_back(objTexture);
     bg.push_back(background2);
 
+    //level_start = new Music();
     grass_init();
 
     setDest(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -80,10 +87,13 @@ void Background::update()
     }
 
     else if (grass_offset_backwards == 1 && (grass_src3.x <= 0 || grass_src3.x >= 2048))
-    {
+    {level_start->playchannel(0, "assets/level_start.wav", 5);
         grass_offset_backwards = 0;
         grass_init();
     }
+
+    if(start_counter >= 250)
+        level_start->playchannel(1, "assets/level_start.wav", 0);
 }
 
 void Background::keyboard_handler()
@@ -138,5 +148,11 @@ void Background::render()
     else if (grass_offset_backwards == 1)
     {
         SDL_RenderCopy(Game::renderer, grass, &grass_src3, &grass_dest3);
+    }
+
+    if(start_counter > 0)
+    {
+        SDL_RenderCopy(Game::renderer, start, NULL, &start_dest);
+        start_counter--;
     }
 }

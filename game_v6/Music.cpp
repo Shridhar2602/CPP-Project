@@ -21,10 +21,8 @@ Music::~Music()
 	Mix_Quit();
 }
 
-void Music::playmusic(const char* path,bool playmus)
+void Music::playmusic(const char* path, int loops)
 {
-	if (playmus == true)
-		Mix_HaltMusic;
 	Mix_Music* music = Mix_LoadMUS(path);
 	if (music== nullptr)
 	{
@@ -33,3 +31,17 @@ void Music::playmusic(const char* path,bool playmus)
 	Mix_PlayMusic(music, -1);
 }
 
+void Music::playchannel(int channel, const char *path, int loops)
+{
+	Mix_Chunk* sound = Mix_LoadWAV(path);
+
+    if (sound == nullptr)
+    {
+        cout << "Couldn't init audio:" << Mix_GetError()<<endl;
+    }
+
+	if(Mix_PlayChannel(channel, sound, loops) == -1)
+	{
+		cout << "Error playing sound" << endl;
+	}
+}

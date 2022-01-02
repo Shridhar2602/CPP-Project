@@ -13,6 +13,10 @@ using namespace std;
 Player* player1;
 Background* background1;
 Enemy* e1;
+
+Mouse *mouse;
+Button *button_play ;
+Button *button_ins;
 vector<Platform*> ListOfPlatforms;
 
 SDL_Renderer* Game::renderer = NULL;
@@ -67,7 +71,12 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
 
     player1 = new Player();
     background1 = new Background();
-    e1=new Enemy(1);
+    e1 = new Enemy(1);
+
+    mouse = new Mouse();
+    menu_background = TextureManager::LoadTexture("assets/BackGround3.png");
+    button_play = new Button(SCREEN_WIDTH / 2 - 135, 150, 271, 79, "assets/play4.png");
+    button_ins = new Button(SCREEN_WIDTH / 2 - 300, 250, 605, 89, "assets/Instructions1.png");
     //int disX = rand() % (SCREEN_WIDTH / 2) + (SCREEN_WIDTH / 2);
     //int disY = rand() % (SCREEN_HEIGHT / 2) + 160;
     //platform1 = new Platform(disX, disY);
@@ -83,17 +92,27 @@ void Game::handleEvents()
     SDL_Event event;
     SDL_PollEvent(&event);
 
+    const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+
+    if (currentKeyStates[SDL_SCANCODE_ESCAPE])
+    {
+        isRunning = false;
+    }
+
     switch (event.type)
     {
-    case SDL_QUIT:
-        isRunning = false;
-        break;
-    default:
-        break;
+        case SDL_QUIT:
+            isRunning = false;
+            break;
+        default:
+            break;
     }
 }
 
 void Game::update()
+{
+
+if(screen_type == GAME)
 {
     background1->update();
 
@@ -144,21 +163,46 @@ void Game::update()
         isRunning=false;
     }
 }
+}
 
 void Game::render()
 {
     SDL_RenderClear(renderer);
-    // add stuff to render
-    background1->render();
-    for (int i = 0;i < ListOfPlatforms.size();i++) {
-        if (ListOfPlatforms[i]->getPosX() - distCovered <= SCREEN_WIDTH
-            || ListOfPlatforms[i]->getPosX() - distCovered <= -SCREEN_WIDTH) {
-            ListOfPlatforms[i]->render();
+
+    if(screen_type == MAIN_MENU)
+    {
+        SDL_RenderCopy(Game::renderer, menu_background, NULL, NULL);
+        button_play->render_button();
+        button_ins->render_button();
+
+        if(button_play->isClicked(mouse))
+        {
+            screen_type = GAME;
         }
     }
-    //platform1->render();
-    player1->render();
-    e1->render();
+
+    else if(screen_type == GAME)
+    {
+           // add stuff to render
+        background1->render();
+        for (int i = 0;i < ListOfPlatforms.size();i++) 
+        {
+            if (ListOfPlatforms[i]->getPosX() - distCovered <= SCREEN_WIDTH || ListOfPlatforms[i]->getPosX() - distCovered <= -SCREEN_WIDTH) 
+            {
+                ListOfPlatforms[i]->render();
+            }
+        }
+        //platform1->render();
+
+        player1->render();
+        e1->render();
+    }
+
+    else if(screen_type == EXIT)
+    {
+
+    }
+
     SDL_RenderPresent(renderer);
 }
 

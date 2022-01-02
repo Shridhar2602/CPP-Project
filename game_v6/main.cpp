@@ -26,7 +26,7 @@ int main(void)
     Uint32 total_time = 0;
     
     Music m;
-    m.playmusic("assets/bgm.wav",false);
+    m.playmusic("assets/bgm.wav", -1);
 
     while (game->running())
     {
