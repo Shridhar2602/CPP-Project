@@ -10,15 +10,15 @@
    - Enemy
    - Scoring
   
-3. Anurag Singh Naruka (IMT202093)
+3. Anurag Singh Naruka (IMT2020093)
    - Platforms
    - Level Design
   
-4. Arya Kondawar (IMT20200  
+4. Arya Kondawar (IMT2020084) 
    - Main Menu
    - Changing Windows
   
-5. Saugandh Krishna (IMT2020 
+5. Saugandh Krishna (IMT2020120)
    - Music effects
  
 ## Prerequisites
