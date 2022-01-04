@@ -25,7 +25,7 @@ Enemy1::~Enemy1()
 void Enemy1::update(int *dist)
 {
     keyboard_handler(dist);
-    xpos-=(speed+2);
+    xpos-=(speed);
     dest_rect.x=xpos;
     animate();
 }
@@ -37,17 +37,17 @@ void Enemy1::keyboard_handler(int *dist)
 {
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-    if (currentKeyStates[SDL_SCANCODE_LEFT])
-    {
-        if (*dist > 0) {
-            xpos += speed;
-        }
-    }
-//
-    //if (currentKeyStates[SDL_SCANCODE_RIGHT])
+    //if (currentKeyStates[SDL_SCANCODE_LEFT])
     //{
-    //        xpos -= speed;
+    //    if (*dist > 0) {
+    //        xpos += speed;
+    //    }
     //}
+
+    if (currentKeyStates[SDL_SCANCODE_RIGHT])
+    {
+            xpos -= speed;
+    }
 }
 void Enemy1::animate()
 {

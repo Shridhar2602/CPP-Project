@@ -58,7 +58,7 @@ private:
     SDL_Window* window;
     int distCovered = 0;
     //int platforms[50][4];
-    int l1[5]={3569,6106,8052,10964,13043};
+    int l1[5]={3569,6106,10052,13964,17043};
     int platforms[25][4] = 
     {
         {1560, 280, 0, 1},

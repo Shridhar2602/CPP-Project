@@ -17,7 +17,7 @@ class Enemy : public GameObject
 	    int getPosX();
 	    int getPosY();
         void kill();
-        int life=5;
+        int life=100;
     private: 
         SDL_Texture *e2;
         int width,height;

@@ -166,7 +166,7 @@ void Game::update()
         }
 
         player1->update(SCREEN_HEIGHT - CurrGround, &distCovered);
-        for(int i=0;i<sizeof(l1)/sizeof(l1[0]);i++)
+        for(int i=0;i<e1.size();i++)
         {
             e1[i]->update(&distCovered);
         }
@@ -176,7 +176,7 @@ void Game::update()
             e2->setDest(10000,SCREEN_HEIGHT-225+20,264,SCREEN_HEIGHT-200);
         }
         vector <SDL_Rect> comv;
-        for(int i=0;i<sizeof(l1)/sizeof(l1[0]);i++)
+        for(int i=0;i<e1.size();i++)
         {
             SDL_Rect tc=*e1[i]->getdestrect();
             tc.x+=330;
@@ -196,19 +196,21 @@ void Game::update()
                     Mix_PlayChannel(1, sound, 0);
                     player1->getBullets()[j]->hit=true;
                     score_str = "Score: ";
-                    score+=20;
+                    //score+=20;
                     score_str.append(to_string(score));
                     if(e1[j]->life==0)
                     {
                         score_str = "Score: ";
-                        score+=50;
+                        score+=250;
                         score_str.append(to_string(score));
                         e1[j]->kill();
+                        e1.erase(e1.begin()+j);
+                        e1.push_back(new Enemy(1,e1[0]->getdestrect()->x+15000));
                     }
                 }
             }
         }
-        for(int i=0;i<sizeof(l1)/sizeof(l1[0]);i++)
+        for(int i=0;i<e1.size();i++)
         {
             SDL_bool c2=SDL_HasIntersection(&comv[i],player1->getdestrect());
             if(invincible_period != 200)
@@ -306,6 +308,7 @@ void Game::render()
         Mix_HaltChannel(4);
         Mix_ResumeMusic();
         background1->render();
+        e2->render();
         for (int i = 0;i < ListOfPlatforms.size();i++) 
         {
             if (ListOfPlatforms[i]->getPosX() - distCovered <= SCREEN_WIDTH || ListOfPlatforms[i]->getPosX() - distCovered <= -SCREEN_WIDTH) 
@@ -316,11 +319,11 @@ void Game::render()
         //platform1->render();
 
         player1->render();
-        for(int i=0;i<sizeof(l1)/sizeof(l1[0]);i++)
+        for(int i=0;i<e1.size();i++)
         {
             e1[i]->render();
         }
-        e2->render();
+        
         score_text->Render(score_str);
         life_text->Render(life_str);
     }
