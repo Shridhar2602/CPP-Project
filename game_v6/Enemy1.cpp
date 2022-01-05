@@ -1,6 +1,6 @@
-#include "Enemy.hpp"
+#include "Enemy1.hpp"
 
-Enemy::Enemy(int eNo,int x)
+Enemy1::Enemy1(int eNo)
 {
     e2=TextureManager::LoadTexture("assets/explosion.png");
     int ht=0;
@@ -8,56 +8,56 @@ Enemy::Enemy(int eNo,int x)
     {
         case 1:
         {
-            setTexture("assets/woodpecker.png");
+            setTexture("assets/seadog.png");
         }
         break;
         default:
             break;
     }
     setSrc(0,0,0,0);
-    setDest(x,0,264,SCREEN_HEIGHT-200);
+    setDest(5000,SCREEN_HEIGHT-225+20,264,SCREEN_HEIGHT-200);
     setSpeed(6);
 }
-Enemy::~Enemy()
+Enemy1::~Enemy1()
 {
-    
+
 }
-void Enemy::update(int *dist)
+void Enemy1::update(int *dist)
 {
     keyboard_handler(dist);
+    xpos-=(speed);
     dest_rect.x=xpos;
     animate();
 }
-void Enemy::kill()
+void Enemy1::kill()
 {
     dead=true;
 }
-void Enemy::keyboard_handler(int *dist) 
+void Enemy1::keyboard_handler(int *dist) 
 {
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
-    if (currentKeyStates[SDL_SCANCODE_LEFT])
-    {
-        if (*dist > 0) {
-            xpos += speed;
-        }
-    }
+    //if (currentKeyStates[SDL_SCANCODE_LEFT])
+    //{
+    //    if (*dist > 0) {
+    //        xpos += speed;
+    //    }
+    //}
 
     if (currentKeyStates[SDL_SCANCODE_RIGHT])
     {
             xpos -= speed;
     }
 }
-void Enemy::animate()
+void Enemy1::animate()
 {
     if(!dead)
     {
-        current_frame = (SDL_GetTicks() * animation_fps / 1000) % 17;
+        current_frame = (SDL_GetTicks() * animation_fps / 1000) % 12;
         src_rect.x=enemy1[current_frame][0];
         src_rect.y=enemy1[current_frame][1];
-        dest_rect.w=src_rect.w=enemy1[current_frame][2]-2;
-        dest_rect.h=src_rect.h=enemy1[current_frame][3]-2;
-        dest_rect.y=enemy1[current_frame][4]+160;
+        dest_rect.w=src_rect.w=enemy1[current_frame][2]-15;
+        dest_rect.h=src_rect.h=enemy1[current_frame][3]-15;
     }
     if(dead)
     {
@@ -74,18 +74,18 @@ void Enemy::animate()
     }
 
 }
-void Enemy::render()
+void Enemy1::render()
 {
     if(!dead)
     {
-        SDL_RenderCopyEx(Game::renderer,objTexture,&src_rect,&dest_rect,-90,NULL,SDL_FLIP_NONE);
+        SDL_RenderCopyEx(Game::renderer,objTexture,&src_rect,&dest_rect,0,NULL,SDL_FLIP_NONE);
     }
     else if(dead && !done)
     {
         SDL_RenderCopy(Game::renderer,e2,&src_rect,&dest_rect);
     }
 }
-int Enemy::getWidth()    { return width; }
-int Enemy::getHeight()   { return height; }
-int Enemy::getPosX()     { return xpos; }
-int Enemy::getPosY()     { return ypos; }
+int Enemy1::getWidth()    { return width; }
+int Enemy1::getHeight()   { return height; }
+int Enemy1::getPosX()     { return xpos; }
+int Enemy1::getPosY()     { return ypos; }

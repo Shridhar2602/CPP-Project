@@ -2,11 +2,11 @@
 #include "constants.hpp"
 #include "GameObject.hpp"
 #include "TextureManager.hpp"
-class Enemy : public GameObject
+class Enemy1 : public GameObject
 {
     public:
-        Enemy(int,int);
-        ~Enemy();
+        Enemy1(int);
+        ~Enemy1();
         void update(int *);
         void keyboard_handler(int *);
         void render();
@@ -17,7 +17,7 @@ class Enemy : public GameObject
 	    int getPosX();
 	    int getPosY();
         void kill();
-        int life=100;
+        int life=5;
     private: 
         SDL_Texture *e2;
         int width,height;
@@ -26,25 +26,20 @@ class Enemy : public GameObject
         int animation_fps=20;
         bool dead=false;
         bool done=false;
-        int enemy1[17][5]=
+        int enemy1[12][5]=
         {
-            {2,18,918,267,-200},
-            {922,18,918,267,-160},
-            {1842,18,918,267,-120},
-            {2762,18,918,267,-80},
-            {2,303,936,294,-40},
-            {940,303,936,294,0},
-            {1878,303,936,294,40},
-            {2,615,959,310,80},
-            {963,615,959,310,120},
-            {1924,615,959,310,80},
-            {2885,615,959,310,40},
-            {2,959,922,325,0},
-            {926,959,922,325,-40},
-            {1850,959,922,325,-80},
-            {2774,959,922,325,-120},
-            {2,1286,922,324,-160},
-            {926,1286,922,324,-200}
+            {2,1088,246,104},
+            {250,1088,246,104},
+            {498,1088,246,104},
+            {746,1088,246,104},
+            {994,1088,246,104},
+            {1242,1088,246,104},
+            {1490,1088,246,104},
+            {1738,1088,246,104},
+            {1986,1088,246,104},
+            {2234,1088,246,104},
+            {2482,1088,246,104},
+            {2730,1088,246,104}
         };
         int e[5][4]=
         {

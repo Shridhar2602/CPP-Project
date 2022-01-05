@@ -7,12 +7,14 @@
 #include "Enemy.hpp"
 #include "SDL2/SDL_mixer.h"
 #include "Text.hpp"
+#include "Enemy1.hpp"
 #include <vector>
 using namespace std;
 
 Player* player1;
 Background* background1;
-Enemy* e1;
+vector<Enemy*> e1;
+Enemy1* e2;
 
 Mouse *mouse;
 Button *button_play ;
@@ -82,8 +84,12 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
 
     player1 = new Player();
     background1 = new Background();
-    e1 = new Enemy(1);
-
+    for(int i=0;i<sizeof(l1)/sizeof(l1[0]);i++)
+    {
+        Enemy *x=new Enemy(1,l1[i]);
+        e1.push_back(x);
+    }
+    e2 = new Enemy1(1);
     mouse = new Mouse();
     menu_background = TextureManager::LoadTexture("assets/BackGround3.png");
     menu_instruction = TextureManager::LoadTexture("assets/instruction.png");
@@ -160,38 +166,84 @@ void Game::update()
         }
 
         player1->update(SCREEN_HEIGHT - CurrGround, &distCovered);
-        e1->update(&distCovered);
+        for(int i=0;i<e1.size();i++)
+        {
+            e1[i]->update(&distCovered);
+        }
+        e2->update(&distCovered);
+        if(e2->getdestrect()->x<-100)
+        {
+            e2->setDest(10000,SCREEN_HEIGHT-225+20,264,SCREEN_HEIGHT-200);
+        }
+        vector <SDL_Rect> comv;
+        for(int i=0;i<e1.size();i++)
+        {
+            SDL_Rect tc=*e1[i]->getdestrect();
+            tc.x+=330;
+            tc.h+=80;
+            comv.push_back(tc);
+            
+        }
         for(int i=0;i<player1->getBullets().size();i++)
         {
-            SDL_bool collision=SDL_HasIntersection(e1->getdestrect(),&player1->getBullets()[i]->dest);
-            if(collision)
+            for(int j=0; j<e1.size();j++)
             {
-                e1->life--;
-                Mix_Chunk* sound = Mix_LoadWAV("assets/hit.wav");
-                Mix_PlayChannel(1, sound, 0);
-                player1->getBullets()[i]->hit=true;
-
-                score_str = "Score: ";
-                score+=20;
-                score_str.append(to_string(score));
-                if(e1->life==0)
+                SDL_bool collision=SDL_HasIntersection(&comv[j],&player1->getBullets()[i]->dest);
+                if(collision)
                 {
+                    e1[j]->life--;
+                    Mix_Chunk* sound = Mix_LoadWAV("assets/hit.wav");
+                    Mix_PlayChannel(1, sound, 0);
+                    player1->getBullets()[j]->hit=true;
                     score_str = "Score: ";
-                    score+=50;
+                    //score+=20;
                     score_str.append(to_string(score));
-                    e1->kill();
+                    if(e1[j]->life==0)
+                    {
+                        score_str = "Score: ";
+                        score+=250;
+                        score_str.append(to_string(score));
+                        e1[j]->kill();
+                        e1.erase(e1.begin()+j);
+                        e1.push_back(new Enemy(1,e1[0]->getdestrect()->x+15000));
+                    }
                 }
             }
         }
+        for(int i=0;i<e1.size();i++)
+        {
+            SDL_bool c2=SDL_HasIntersection(&comv[i],player1->getdestrect());
+            if(invincible_period != 200)
+                invincible_period--;
+            if(invincible_period == 0)
+                invincible_period = 200;
 
-        SDL_bool c2=SDL_HasIntersection(e1->getdestrect(),player1->getdestrect());
+            if(c2)
+            {
+                //playeralive=false;
+                if(life > 0 && invincible_period == 200)
+                {
+                    life_str = "Life: ";
+                    life--;
+                    life_str.append(to_string(life));
+                    invincible_period--;
+                    cout << "dead" << endl;
+                }
 
+                else if(life <= 0)
+                {
+                    m.playchannel(3, "assets/player_dead.wav", 0);
+                    playeralive = false;
+                }
+            }
+        }
+        SDL_bool c3=SDL_HasIntersection(e2->getdestrect(),player1->getdestrect());
         if(invincible_period != 200)
             invincible_period--;
         if(invincible_period == 0)
             invincible_period = 200;
 
-        if(c2)
+        if(c3)
         {
             //playeralive=false;
             if(life > 0 && invincible_period == 200)
@@ -256,6 +308,7 @@ void Game::render()
         Mix_HaltChannel(4);
         Mix_ResumeMusic();
         background1->render();
+        e2->render();
         for (int i = 0;i < ListOfPlatforms.size();i++) 
         {
             if (ListOfPlatforms[i]->getPosX() - distCovered <= SCREEN_WIDTH || ListOfPlatforms[i]->getPosX() - distCovered <= -SCREEN_WIDTH) 
@@ -266,7 +319,11 @@ void Game::render()
         //platform1->render();
 
         player1->render();
-        e1->render();
+        for(int i=0;i<e1.size();i++)
+        {
+            e1[i]->render();
+        }
+        
         score_text->Render(score_str);
         life_text->Render(life_str);
     }
