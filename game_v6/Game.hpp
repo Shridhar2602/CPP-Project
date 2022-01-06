@@ -39,6 +39,7 @@ public:
 private:
 
     int screen_type = MAIN_MENU;
+    SDL_Texture *tex_title = NULL;
     SDL_Texture *menu_background = NULL;
     SDL_Texture *menu_instruction = NULL;
     

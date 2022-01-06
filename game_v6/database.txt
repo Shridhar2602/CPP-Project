@@ -1,3 +1,4 @@
+Anuvrat : 1750
 topmper : 1500
 mayank t : 1500
 sdf : 750
@@ -7,6 +8,10 @@ Darshak : 76
 Anurag : 56
 Shridhar : 50
 Player3 : 45
+z : 0
 skdjflsdakj : 0
 sdfg : 0
 sdasdasd : 0
+asas : 0
+aaaaa : 0
+aa : 0

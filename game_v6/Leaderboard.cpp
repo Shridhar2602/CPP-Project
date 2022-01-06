@@ -52,6 +52,8 @@ void Leaderboard::sort()
     map <string, int> m;
     string s;
 
+    cout << 1 << endl;
+
     file.open("database.txt");
     while(getline(file, s))
     {
@@ -70,9 +72,8 @@ void Leaderboard::sort()
 
             [](const pair<string, int> &l, const pair<string, int> &r)
             {
-                if (l.second != r.second) {
+                if (l.second != r.second) 
                     return l.second > r.second;
-                }
  
                 return l.first > r.first;
             });

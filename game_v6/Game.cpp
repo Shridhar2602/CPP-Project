@@ -84,14 +84,15 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
         Enemy *x=new Enemy(1,l1[i]);
         e1.push_back(x);
     }
+    
     e2 = new Enemy1(1);
     mouse = new Mouse();
+    tex_title = TextureManager::LoadTexture("assets/title.png");
     menu_background = TextureManager::LoadTexture("assets/BackGround3.png");
     menu_instruction = TextureManager::LoadTexture("assets/instruction.png");
-    
 
-    button_play = new Button(SCREEN_WIDTH / 2 - 135, 150, 271, 79, "assets/play4.png");
-    button_ins = new Button(SCREEN_WIDTH / 2 - 300, 250, 605, 89, "assets/Instructions1.png");
+    button_play = new Button(SCREEN_WIDTH / 2 - 90, 260, 180, 52, "assets/play4.png");
+    button_ins = new Button(SCREEN_WIDTH / 2 - 198, 340, 396, 58, "assets/Instructions1.png");
     button_back = new Button(20, 20, 200, 81, "assets/back.jpg");
 
     lb = new Leaderboard();
@@ -105,6 +106,7 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
     //int disX = rand() % (SCREEN_WIDTH / 2) + (SCREEN_WIDTH / 2);
     //int disY = rand() % (SCREEN_HEIGHT / 2) + 160;
     //platform1 = new Platform(disX, disY);
+
     fillPlatform();
     int n = sizeof(platforms) / sizeof(platforms[0]);
     for (int i = 0;i < n;i++) {
@@ -273,7 +275,6 @@ void Game::render()
 
     if(screen_type == MAIN_MENU)
     {
-
         if(!(Mix_Playing(4)))
         {
             m.playchannel(4, "assets/menu.wav", -1);
@@ -281,7 +282,9 @@ void Game::render()
         }
         
         Mix_PauseMusic();
+        SDL_Rect temp = {SCREEN_WIDTH / 2 - 360, 20, 720, 122};
         SDL_RenderCopy(Game::renderer, menu_background, NULL, NULL);
+        SDL_RenderCopy(Game::renderer, tex_title, NULL, &temp);
         button_play->render_button();
         button_ins->render_button();
 

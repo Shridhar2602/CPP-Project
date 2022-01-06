@@ -11,6 +11,7 @@ class Enemy : public GameObject
         void keyboard_handler(int *);
         void render();
         void animate();
+        
         // getters
 	    int getWidth();
 	    int getHeight();
