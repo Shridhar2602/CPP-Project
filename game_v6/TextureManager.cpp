@@ -16,7 +16,9 @@ SDL_Texture* TextureManager::LoadText(TTF_Font *f, string text, SDL_Color c)
 {
     SDL_Surface* tempSurface = TTF_RenderText_Blended(f, text.c_str(), c);
     if (tempSurface == NULL)
-        cout << "Unable to load text...." << TTF_GetError() << endl;
+    {
+        //cout << "Unable to load text...." << TTF_GetError() << endl;
+    }
 
     SDL_Texture* tex = SDL_CreateTextureFromSurface(Game::renderer, tempSurface);
     SDL_FreeSurface(tempSurface);

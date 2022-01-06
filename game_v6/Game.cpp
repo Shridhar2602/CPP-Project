@@ -36,11 +36,6 @@ Game::Game()
 
 }
 
-Game::~Game()
-{
-
-}
-
 void Game::init(string title, int xpos, int ypos, int width, int height, bool fullscrean)
 {
     // flag for fullscrean
@@ -100,8 +95,6 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
     button_back = new Button(20, 20, 200, 81, "assets/back.jpg");
 
     lb = new Leaderboard();
-
-
 
     score_text = new Text();
     score_text->set_rect(SCREEN_WIDTH - 250, 20, 200, 75);
@@ -179,6 +172,7 @@ void Game::update()
         for(int i=0;i<e1.size();i++)
         {
             SDL_Rect tc=*e1[i]->getdestrect();
+            tc.w -= 651;
             tc.x+=330;
             tc.h+=80;
             comv.push_back(tc);
@@ -192,8 +186,7 @@ void Game::update()
                 if(collision)
                 {
                     e1[j]->life--;
-                    Mix_Chunk* sound = Mix_LoadWAV("assets/hit.wav");
-                    Mix_PlayChannel(1, sound, 0);
+                    m.playchannel(6, "assets/hit.wav", 0);
                     player1->getBullets()[j]->hit=true;
                     score_str = "Score: ";
                     //score+=20;
@@ -213,15 +206,15 @@ void Game::update()
         for(int i=0;i<e1.size();i++)
         {
             SDL_bool c2=SDL_HasIntersection(&comv[i],player1->getdestrect());
-            if(invincible_period != 200)
+            if(invincible_period != 600)
                 invincible_period--;
             if(invincible_period == 0)
-                invincible_period = 200;
+                invincible_period = 600;
 
             if(c2)
             {
                 //playeralive=false;
-                if(life > 0 && invincible_period == 200)
+                if(life > 0 && invincible_period == 600)
                 {
                     life_str = "Life: ";
                     life--;
@@ -238,18 +231,19 @@ void Game::update()
             }
         }
         SDL_bool c3=SDL_HasIntersection(e2->getdestrect(),player1->getdestrect());
-        if(invincible_period != 200)
+        if(invincible_period != 600)
             invincible_period--;
         if(invincible_period == 0)
-            invincible_period = 200;
+            invincible_period = 600;
 
         if(c3)
         {
             //playeralive=false;
-            if(life > 0 && invincible_period == 200)
+            if(life > 0 && invincible_period == 600)
             {
                 life_str = "Life: ";
                 life--;
+                m.playchannel(5, "assets/player_hit.wav", 0);
                 life_str.append(to_string(life));
                 invincible_period--;
                 cout << "dead" << endl;
@@ -308,7 +302,6 @@ void Game::render()
         Mix_HaltChannel(4);
         Mix_ResumeMusic();
         background1->render();
-        e2->render();
         for (int i = 0;i < ListOfPlatforms.size();i++) 
         {
             if (ListOfPlatforms[i]->getPosX() - distCovered <= SCREEN_WIDTH || ListOfPlatforms[i]->getPosX() - distCovered <= -SCREEN_WIDTH) 
@@ -323,7 +316,9 @@ void Game::render()
         {
             e1[i]->render();
         }
-        
+
+        e2->render();
+
         score_text->Render(score_str);
         life_text->Render(life_str);
     }
@@ -347,7 +342,7 @@ void Game::render()
         }
 
         background1->render_leaderboard();
-        lb->render();
+        lb->render(score);
     }
 
     SDL_RenderPresent(renderer);
@@ -365,4 +360,19 @@ void Game::clean()
 bool Game::running()
 {
     return isRunning;
+}
+
+Game::~Game()
+{
+    // delete player1;
+    // delete background1;
+    // delete e2;
+    // delete mouse;
+    // delete button_play;
+    // delete button_ins;
+    // delete button_back;
+    // delete button_exit;
+    // delete lb;
+    // delete score_text;
+    // delete life_text;
 }

@@ -39,7 +39,6 @@ int main(void)
 
         frame_time = SDL_GetTicks() - frame_start;
 
-
         if (frame_delay > frame_time)
         {
             SDL_Delay(frame_delay - frame_time);

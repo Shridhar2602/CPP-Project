@@ -16,7 +16,7 @@ Enemy1::Enemy1(int eNo)
     }
     setSrc(0,0,0,0);
     setDest(5000,SCREEN_HEIGHT-225+20,264,SCREEN_HEIGHT-200);
-    setSpeed(6);
+    setSpeed(4);
 }
 Enemy1::~Enemy1()
 {
@@ -46,7 +46,7 @@ void Enemy1::keyboard_handler(int *dist)
 
     if (currentKeyStates[SDL_SCANCODE_RIGHT])
     {
-            xpos -= speed;
+            xpos -= (speed + 2);
     }
 }
 void Enemy1::animate()

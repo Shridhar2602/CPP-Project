@@ -49,7 +49,7 @@ private:
     int life = 3;
     string life_str = "Life: 3";
 
-    int invincible_period = 180;
+    int invincible_period = 600;
 
     Music m;
 

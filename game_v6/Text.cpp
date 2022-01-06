@@ -4,7 +4,7 @@ Text::Text()
 {
     Sans = TTF_OpenFont("assets/fonts/AlegreyaSansSC-Bold.ttf", 36);
     if(Sans == NULL)
-        cout << "Failes to load font..." << endl;
+        cout << "Failed to load font..." << endl;
     color = {0, 0, 0};
 }
 
